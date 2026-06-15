@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register – Lost &amp; Found</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header>
+    <h1>🎒 Campus Lost &amp; Found Portal</h1>
+</header>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="flash-container">
+        {% for category, message in messages %}
+            <div class="flash flash-{{ category }}">{{ message }}</div>
+        {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+
+<div class="auth-container">
+    <h2>Student Registration</h2>
+
+    <form action="/register_user" method="POST">
+        <input type="text"  name="name"     placeholder="Full Name"        required>
+        <input type="text"  name="reg_no"   placeholder="Register Number"  required>
+        <input type="email" name="email"    placeholder="Email Address"    required>
+        <input type="password" name="password" placeholder="Password"      required>
+        <button type="submit" class="btn-full">Create Account</button>
+    </form>
+
+    <p class="auth-link">Already have an account? <a href="/login">Login here</a></p>
+</div>
+
+</body>
+</html>

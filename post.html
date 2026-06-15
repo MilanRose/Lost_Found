@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Item – Lost &amp; Found</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header>
+    <h1>📌 Post Lost / Found Item</h1>
+    <div class="nav-buttons">
+        <a href="/"><button class="btn-outline">🏠 Home</button></a>
+    </div>
+</header>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="flash-container">
+        {% for category, message in messages %}
+            <div class="flash flash-{{ category }}">{{ message }}</div>
+        {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+
+<div class="form-container">
+    <form action="/add_item" method="POST" enctype="multipart/form-data">
+
+        <label>Item Title</label>
+        <input type="text" name="title" placeholder="e.g. Black Wallet" required>
+
+        <label>Description</label>
+        <textarea name="description" placeholder="Describe the item in detail..." rows="4" required></textarea>
+
+        <label>Type</label>
+        <select name="type" required>
+            <option value="">Select Type</option>
+            <option value="Lost">Lost</option>
+            <option value="Found">Found</option>
+        </select>
+
+        <label>Category</label>
+        <select name="category" required>
+            <option value="">Select Category</option>
+            <option value="Electronics">Electronics</option>
+            <option value="ID Card">ID Card</option>
+            <option value="Bags">Bags</option>
+            <option value="Accessories">Accessories</option>
+            <option value="Wallet">Wallet</option>
+            <option value="Keys">Keys</option>
+            <option value="Books">Books</option>
+            <option value="Others">Others</option>
+        </select>
+
+        <label>Location</label>
+        <select name="location" required>
+            <option value="">Select Location</option>
+            <option value="Library">Library</option>
+            <option value="Lab">Lab</option>
+            <option value="Class Room">Class Room</option>
+            <option value="Cafeteria">Cafeteria</option>
+            <option value="Auditorium">Auditorium</option>
+            <option value="Parking Area">Parking Area</option>
+        </select>
+
+        <label>Contact Number / Email</label>
+        <input type="text" name="contact" placeholder="e.g. 9876543210 or you@email.com" required>
+
+        <label>Upload Image <span class="optional">(optional)</span></label>
+        <input type="file" name="image" accept="image/*">
+
+        <button type="submit" class="btn-full">🚀 Submit Item</button>
+    </form>
+</div>
+
+</body>
+</html>

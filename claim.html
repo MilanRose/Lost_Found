@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claim Item – Lost &amp; Found</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header>
+    <h1>🙋 Claim Item</h1>
+    <div class="nav-buttons">
+        <a href="/"><button class="btn-outline">🏠 Home</button></a>
+    </div>
+</header>
+
+<div class="form-container">
+    <div class="claim-item-preview">
+        <h2>{{ item[1] }}</h2>
+        <p><strong>Category:</strong> {{ item[4] }} &nbsp;|&nbsp; <strong>Location:</strong> {{ item[5] }}</p>
+        <p>{{ item[2] }}</p>
+    </div>
+
+    <h3>Send a claim message to the poster</h3>
+    <form action="/claim/{{ item[0] }}" method="POST">
+        <label>Your Message</label>
+        <textarea name="message"
+            placeholder="Explain why this item belongs to you, or how you found it..."
+            rows="5" required></textarea>
+
+        <button type="submit" class="btn-full">📨 Submit Claim</button>
+    </form>
+
+    <a href="/"><button class="btn-outline" style="margin-top:10px;width:100%">Cancel</button></a>
+</div>
+
+</body>
+</html>

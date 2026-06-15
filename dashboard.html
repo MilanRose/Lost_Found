@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header>
+    <h1>📋 My Dashboard</h1>
+    <div class="nav-buttons">
+        <a href="/"><button class="btn-outline">🏠 Home</button></a>
+        <a href="/post"><button>+ Post Item</button></a>
+        <a href="/logout"><button class="btn-outline">Logout</button></a>
+    </div>
+</header>
+
+<!-- Flash messages -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="flash-container">
+        {% for category, message in messages %}
+            <div class="flash flash-{{ category }}">{{ message }}</div>
+        {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+
+<div class="dashboard-header">
+    <h2>Welcome, {{ name }}! 👋</h2>
+    <p>You have posted <strong>{{ items|length }}</strong> item(s).</p>
+</div>
+
+<section id="itemsContainer">
+    {% if items %}
+        {% for item in items %}
+        <div class="item-card {{ 'lost-card' if item[3] == 'Lost' else 'found-card' }}">
+
+            {% if item[7] %}
+                <img src="{{ url_for('static', filename='uploads/' + item[7]) }}" class="item-image" alt="Item Image">
+            {% else %}
+                <div class="no-image">No Image</div>
+            {% endif %}
+
+            <span class="badge {{ 'badge-lost' if item[3] == 'Lost' else 'badge-found' }}">
+                {{ '🔴 Lost' if item[3] == 'Lost' else '🟢 Found' }}
+            </span>
+
+            <h2>{{ item[1] }}</h2>
+            <p><strong>Category:</strong> {{ item[4] }}</p>
+            <p><strong>Location:</strong> {{ item[5] }}</p>
+            <p><strong>Description:</strong> {{ item[2] }}</p>
+            <p><strong>Contact:</strong> {{ item[6] }}</p>
+            <p><strong>Status:</strong>
+                <span class="status-badge status-{{ item[8].lower() }}">{{ item[8] }}</span>
+            </p>
+            <p class="posted-date"><strong>Posted:</strong> {{ item[9].strftime('%d %b %Y') if item[9] else '' }}</p>
+
+            <a href="/delete_item/{{ item[0] }}"
+               onclick="return confirm('Are you sure you want to delete this item?')">
+                <button class="btn-danger">🗑 Delete</button>
+            </a>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="empty-state">
+            <h2>You haven't posted any items yet.</h2>
+            <a href="/post"><button>Post Your First Item</button></a>
+        </div>
+    {% endif %}
+</section>
+
+</body>
+</html>

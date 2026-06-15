@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Matches Found!</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header>
+    <h1>🤖 AI Match Results</h1>
+    <div class="nav-buttons">
+        <a href="/"><button class="btn-outline">🏠 Home</button></a>
+    </div>
+</header>
+
+<div class="matches-container">
+    <div class="match-header">
+        <h2>Possible matches found for "<em>{{ posted_title }}</em>"</h2>
+        <p>The AI compared your item against existing posts and found these potential matches:</p>
+    </div>
+
+    {% for result in matches %}
+    <div class="item-card {{ 'lost-card' if result.item[3] == 'Lost' else 'found-card' }} match-card">
+        <div class="match-score">
+            Match Score: <strong>{{ result.score }}%</strong>
+            <div class="score-bar">
+                <div class="score-fill" style="width: {{ result.score }}%"></div>
+            </div>
+        </div>
+
+        {% if result.item[7] %}
+            <img src="{{ url_for('static', filename='uploads/' + result.item[7]) }}" class="item-image" alt="Item Image">
+        {% endif %}
+
+        <span class="badge {{ 'badge-lost' if result.item[3] == 'Lost' else 'badge-found' }}">
+            {{ '🔴 Lost' if result.item[3] == 'Lost' else '🟢 Found' }}
+        </span>
+
+        <h2>{{ result.item[1] }}</h2>
+        <p><strong>Category:</strong> {{ result.item[4] }}</p>
+        <p><strong>Location:</strong> {{ result.item[5] }}</p>
+        <p><strong>Description:</strong> {{ result.item[2] }}</p>
+        <p><strong>Contact:</strong> {{ result.item[6] }}</p>
+
+        <a href="/claim/{{ result.item[0] }}"><button class="btn-claim">Claim This Item</button></a>
+    </div>
+    {% endfor %}
+
+    <a href="/"><button class="btn-outline" style="margin-top:20px">View All Items</button></a>
+</div>
+
+</body>
+</html>
